@@ -1,0 +1,135 @@
+#include <iostream>
+#define MAX 20
+
+using namespace std;
+
+struct No{
+    int x;
+    int y;
+};
+
+struct Pilha{
+    No V[MAX];
+    int topo;
+};
+
+struct Fila{
+    No V[MAX];
+    int n;
+    int ini;
+};
+
+int main(void)
+{
+    Pilha P, C;
+    int A[6][6], x, y;
+    No ori, aux;
+
+    for(int i=0; i<6; i++)
+    {
+        for(int j=0; j<6; j++)
+        {
+            A[i][j] = 0;
+        }
+    }
+
+    A[0][1] = A[0][5] = A[1][2] = A[1][4] = A[2][5] = A[3][1] = -1;
+    A[3][2] = A[4][0] = A[4][4] = A[4][5] = A[5][2] = -1;
+
+    cout << "Matriz A:" << endl;
+    for(int i=0; i<6; i++)
+    {
+
+        for(int j=0; j<6; j++)
+        {
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    ori.x = 0;
+    ori.y = 0;
+
+    P.topo = -1;
+    P.topo++;
+    P.V[P.topo] = ori;
+
+    do
+    {
+        x = P.V[P.topo].x;
+        y = P.V[P.topo].y;
+        if(A[x+1][y] == 0 && x<5 && y<6)
+        {
+            P.topo++;
+            P.V[P.topo].x = x+1;
+            P.V[P.topo].y = y;
+        }
+        else
+        {
+            if(A[x][y+1] == 0 && x<6 && y<5)
+            {
+                P.topo++;
+                P.V[P.topo].x = x;
+                P.V[P.topo].y = y+1;
+            }
+            else
+            {
+                cout << "x: " << x << " y: " << y << endl << endl;
+                A[x][y] = -1;
+                P.topo--;
+            }
+        }
+
+        cout << "Pilha P: " << endl;
+        for(int i=P.topo; i>-1; i--)
+        {
+            cout << "(" << P.V[i].x << "," << P.V[i].y << ") -> ";
+        }
+        cout << " NULL" <<endl;
+
+        cout << "Matriz A:" << endl;
+        for(int i=0; i<6; i++)
+        {
+
+            for(int j=0; j<6; j++)
+            {
+                cout << A[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }while(P.topo > 0 && x != 5 && y != 5);
+
+    if(P.topo > 0)
+    {
+        P.topo++;
+        P.V[P.topo].x = 5;
+        P.V[P.topo].y = 5;
+    }
+
+    cout << "Pilha P: " << endl;
+    for(int i=P.topo; i>-1; i--)
+    {
+        cout << "(" << P.V[i].x << "," << P.V[i].y << ") -> ";
+    }
+    cout << " NULL" <<endl;
+
+
+    cout << endl;
+
+    C.topo = -1;
+    for(int i=P.topo; i>-1; i--)
+    {
+        C.topo++;
+        C.V[C.topo] = P.V[i];
+    }
+
+    cout << "Caminho ";
+    for(int i=C.topo; i>-1; i--)
+    {
+        cout << " -> (" << C.V[i].x << "," << C.V[i].y << ")";
+    }
+    cout << endl;
+
+
+    return 0;
+}
