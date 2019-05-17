@@ -1,0 +1,89 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+void max_Heapify(int* vetor, int i, int tamVetor);
+void build_Heap(int* vetor, int tamVetor);
+void Heapsort(int* vetor, int tamVetor);
+void subtrair_vetor(int* vetor, int x, int tamVetor);
+void captar_os_kvalores(int* vetor, int k, int x);
+
+int main(){
+    int vetor[] = {10, 2, 14, 4, 7, 6}; //{10, 2, 14, 4, 7, 6}
+   /* Heapsort(vetor,6);
+    for(int i=0;i<6;i++){
+    cout << vetor[i] << " ";
+    }
+    cout<<endl;*/
+    cout <<"valor: "<< vetor[2] - 5;
+    cout <<"oi"<< endl;
+    subtrair_vetor(vetor,5, 6);
+    cout<< endl;
+    cout <<"oi 2"<< endl;
+    Heapsort(vetor,6);
+    for(int i=0;i<6;i++){
+    cout << vetor[i] << " ";
+    }
+    cout << endl;
+    captar_os_kvalores(vetor, 3, 5);
+    cout << endl;
+}
+void subtrair_vetor(int* vetor, int x, int tamVetor){
+    for(int i=0; i<tamVetor ;i++){
+        int novoValor;
+        vetor[i] = abs(vetor[i] - x); //abs(x) retorna o valor absoluto de x
+        novoValor =(vetor[i] - x);
+        if (novoValor < 0) {
+            novoValor *= -1;
+        }
+
+        //vetor[novoValor] =vetor[i];
+        cout <<novoValor << " ";
+    }
+
+}
+
+void captar_os_kvalores(int* vetor, int k, int x){
+    for(int j=0; j<k; j++){
+        cout <<vetor[j]<< " ";
+        }
+}
+
+void max_Heapify(int* vetor, int i, int tamVetor){
+    int left = 2*i;
+    int right = 2*i+1;
+    int max;
+    if(left <= tamVetor && vetor[left] > vetor[i] ){
+        max = left;
+    }
+    else{
+        max = i;
+    }
+    if(right <= tamVetor && vetor[right] > vetor[max]){
+        max = right;
+    }
+    if(max != i){
+        int aux = vetor[i];
+        vetor[i] = vetor[max];
+        vetor[max] = aux;
+        max_Heapify(vetor,max,tamVetor);
+    }
+}
+
+void build_Heap(int* vetor, int tamVetor){
+    for(int i=tamVetor/2;i>=0;i--){
+        max_Heapify(vetor,i,tamVetor);
+    }
+}
+
+void Heapsort(int* vetor, int tamVetor){
+    build_Heap(vetor,tamVetor);
+    for(int i=tamVetor;i>=1;i--){
+        int aux = vetor[0];
+        vetor[0] = vetor[i];
+        vetor[i] = aux;
+        tamVetor--;
+        max_Heapify(vetor,0,tamVetor);
+    }
+}
+   // vetor ordenado: 1,2,3,4,7,8,9,10,14,16}
