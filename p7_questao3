@@ -1,0 +1,73 @@
+#include <iostream>
+#define NULL nullptr
+
+using namespace std;
+
+struct Node{
+
+    int chave;
+    struct Node *right, *left;
+
+};
+struct Node *aux(int x){
+
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->chave = x;
+    temp->left = temp->right = NULL;
+    return temp;
+
+};
+
+// Função para inserir o no //
+
+struct Node* inserir(Node* no, int _chave){
+
+    if(no == NULL){
+        // Se for vazia a árvore, retornar um no //
+        return aux(_chave);
+
+    }
+    else if(_chave < no->chave){
+        // Caso a àrvore não for vazia, e o valor //
+        // for menor que a chave atual, inserir   //
+        // no no a esquerda //
+
+        no->left = inserir(no->left, _chave);
+
+    }else if(_chave > no->chave){
+        // se a chave for maior qu a chave atual  //
+        // inserir no no à direita                //
+
+        no->right = inserir(no->right, _chave);
+
+    }
+
+    return no;
+
+};
+
+struct Node* busca(struct Node* no, int _chave){
+
+    if(no == NULL || no->chave == _chave){
+
+        return no;
+
+    }else if(no->chave < _chave){
+        // Se for maior //
+        return busca(no->right , _chave);
+
+    }else if(no->chave > _chave){
+
+        return busca(no->left, _chave);
+
+    }
+
+
+};
+
+
+int main(){
+
+
+    return 0;
+}
