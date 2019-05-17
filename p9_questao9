@@ -1,0 +1,188 @@
+#include <iostream>
+
+#define MAX 50
+
+using namespace std;
+
+struct Node{
+    int custo;
+    int key;
+};
+
+struct folha{
+    int chave;
+    struct folha *right, *left;
+};
+struct folha *aux2(int x){
+
+    struct folha* temp = (struct folha*)malloc(sizeof(struct folha));
+    temp->chave = x;
+    temp->left = temp->right = NULL;
+    return temp;
+
+};
+
+ class OptmalBST{
+ public:
+    struct Node matrix[MAX][MAX];
+    struct Node aux;
+    int chaves[MAX];
+    int frequency[MAX];
+    int n;
+    int root;
+    int menorCusto;
+    OptmalBST(){
+        /// O vetor começa vazio ///
+
+        n = -1;
+
+    }
+    void insertFrequency(int _chave, int _frequency){
+
+       if(n == MAX - 1){
+
+            cout << "The Array of Keys is Full" << endl;
+
+       }else{
+
+            chaves[++n] = _chave;
+            frequency[n] = _frequency;
+
+       }
+
+    }
+    int optcusto(int i, int j){
+
+        /// Casos base, onde a parte de baixo da matriz não importa ///
+        /// A diagonal principal é tudo zero, e depois disso é só a ///
+        /// frequencia
+
+        cout << "começou...." << endl;
+
+        if(j <= i){
+            return 0;
+        }
+        if(j - i == 1){
+            return frequency[i];
+        }
+
+        /// Soma das frequencias ///
+        int soma = 0;
+        for(int k = i; k <= j; k++){
+
+            soma = soma + frequency[k];
+
+        }
+
+        /// Agora iremos encontrar o min ///
+        /// Inicializando o valor minimo ///
+
+        int minimo = INT_MAX;
+
+        for(int k = i; k <= j; ++k){
+
+            int cost = optcusto(i, k - 1) + optcusto(k + 1, j);
+
+            if(cost < minimo){
+
+                minimo = cost;
+                root = k + 1;
+                cout << root << "--" << minimo << endl;
+            }
+        }
+
+        return (minimo + soma);
+
+    }
+    void printEverything(){
+
+        cout << "Chaves--> " ;
+        for(int i = 0; i <= n; i++){
+
+            cout << chaves[i] << " ";
+
+        }
+        cout << endl;
+        cout << "Frequencia--> ";
+        for(int i = 0;i <= n; i++){
+
+            cout << frequency[i] << " ";
+
+        }
+        cout << endl;
+    }
+    void optParaDiferentes(){
+
+        for(int i = 0; i < n; i++){
+
+            for(int j = 0; j < n; j++){
+
+                if( j <= i){
+
+                    aux.custo = 0;
+                    aux.key = 0;
+
+                    matrix[i][j] = aux;
+
+                }else if(j - i == 1){
+
+                    aux.custo = frequency[j];
+                    aux.key = 0;
+
+                    matrix[i][j] = aux;
+
+                }else{
+
+                    aux.custo = optcusto(i, j);
+                    aux.key = root;
+
+                    matrix[i][j] = aux;
+
+                }
+
+            }
+
+        }
+
+    }
+    void constructTree(){
+
+        for(int i = 0; i < n; i++){
+
+            for(int j = 0; j < n; j++){
+
+                if(matrix[i][j].key - 1 == -1){
+
+                    /// fazer nada ///
+
+                }else{
+
+                    /// Criando a Arvore ///
+                    int key = matrix[i][j].key;
+                    struct folha* l = aux2(chaves[key - 1]);
+                    int key1 = matrix[i][key - 1].key;
+                    l->left = aux2(chaves[key1 - 1]);
+                    int key2 = matrix[key][j].key;
+                    l->right = aux2(chaves[key2 -1]);
+
+                }
+
+            }
+        }
+
+    }
+ };
+
+
+int main(){
+
+    OptmalBST obj;
+
+    obj.insertFrequency(10, 34);
+    obj.insertFrequency(12, 8);
+    obj.insertFrequency(20, 50);
+    obj.printEverything();
+    cout << obj.optcusto(0, 4) << endl;
+
+    return 0;
+}
