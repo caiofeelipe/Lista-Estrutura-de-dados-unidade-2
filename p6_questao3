@@ -1,0 +1,74 @@
+#include <iostream>
+
+using namespace std;
+
+void construirMatriz(int M[][6]){
+    for(int i=0; i<6;i++){
+        for(int j=0; j<6; j++){
+            if(i==0 && j==1
+            || i==1 && j==2
+            || i==2 &&j==4
+            || i==3 && (j==2 || j==4)
+            || i==4 && j==0
+            || i==5 && j==1){
+                M[i][j] = 1;
+            }
+            else{
+               M[i][j] = 0;
+            }
+        }
+    }
+}
+
+void imprimirMatriz(int M[6][6]){
+    for(int i=0; i<6; i++){
+        for(int j=0; j<6;j++){
+            cout << M[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    int M[6][6];
+
+    construirMatriz(M);
+    imprimirMatriz(M);
+
+    /* Supondo que não há caminho
+     da cidade 3 para qualquer uma outra */
+
+    int d[6]= {0}, fila[6]={0},cont=1, inicio=0, fim=0, aux=inicio;
+
+    fila[0]= 3;
+
+    while(cont!=0){
+        cont=0;
+        for(int j=0;j<6;j++){
+            if(M[fila[inicio]][j]==1 && d[j]==0){
+                  d[j]=1+d[fila[inicio]];
+                  fim++;
+
+                  fila[fim]=j;
+                  cont++;
+            }
+       }
+        inicio++;
+        if(fila[inicio]!=0){
+            cont=1;
+        }
+    }
+
+    cout << "As distancias entre as cidades eh: \n";
+
+    for(int i=0; i<6;i++){
+        if(d[i]==0 && i!=3){
+            d[i]=-1;
+        }
+        cout << d[i] << " ";
+    }
+
+    cout << endl;
+    return 0;
+}
